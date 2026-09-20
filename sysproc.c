@@ -89,3 +89,21 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+// return the number of times a process has called a specific syscall
+int
+sys_getcount(void)
+{
+	// define int for arg
+	int callNum;
+
+	// fetch arg value and ensure valid
+	if(argint(0, &callNum) < 0)
+		return -1;
+
+	// load proc struct
+	struct proc *curproc = myproc();
+
+	// return value stored in array
+	return curproc->syscallCounts[callNum-1];
+}
